@@ -38,7 +38,6 @@ import {
     InventoryVendor,
 } from 'app/modules/admin/apps/ecommerce/inventory/inventory.types';
 import { InventoryService } from 'app/modules/admin/apps/ecommerce/inventory/inventory.service';
-import { Building, Config } from 'app/shared/building.module';
 
 @Component({
     selector: 'inventory-list',
@@ -74,7 +73,6 @@ export class InventoryListComponent
     @ViewChild(MatSort) private _sort: MatSort;
 
     products$: Observable<InventoryProduct[]>;
-    building$: Observable<Config[]>;
 
     brands: InventoryBrand[];
     categories: InventoryCategory[];
@@ -89,11 +87,11 @@ export class InventoryListComponent
     tagsEditMode: boolean = false;
     vendors: InventoryVendor[];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
-    allBuldingConfigData: any;
-    data: any[] = [];
-    /* dataSource: any; */
+    BuildingName: [] = [];
+    data: any;
 
     /**
+    
      * Constructor
      */
     constructor(
@@ -111,6 +109,15 @@ export class InventoryListComponent
      * On init
      */
     ngOnInit() {
+        /* debugger; */
+        this._inventoryService
+            .getConfig()
+            .pipe(pluck('configs'))
+            .subscribe((res) => {
+                console.log(res);
+                this.data = res;
+            });
+
         // Create the selected product form
         this.selectedProductForm = this._formBuilder.group({
             id: [''],
@@ -134,30 +141,6 @@ export class InventoryListComponent
             currentImageIndex: [0], // Image index that is currently being viewed
             active: [false],
         });
-
-        //Get Buldingdata
-
-        this._inventoryService
-            .getConfig()
-            .pipe(pluck('configs'))
-            .subscribe((res) => {
-                /* debugger; */
-
-                this.allBuldingConfigData = res;
-                for (let i = 0; i < this.allBuldingConfigData.length; i++) {
-                    /* debugger; */
-                    this.data.push(this.allBuldingConfigData[i].buildingName);
-                }
-                this.allBuldingConfigData.forEach((data) => {
-                    data.description;
-                });
-
-                console.log(this.data);
-                /* this.allBuldingConfigData = res.
-                 */
-            });
-        /* debugger; */
-        /* this.building$ = this._inventoryService.config$.subscribe(); */
 
         // Get the brands
         this._inventoryService.brands$
@@ -193,7 +176,6 @@ export class InventoryListComponent
             });
 
         // Get the products
-
         this.products$ = this._inventoryService.products$;
 
         // Get the tags
@@ -308,7 +290,11 @@ export class InventoryListComponent
      * @param productId
      */
     toggleDetails(productId: string): void {
-        // If the product is already selected...
+        console.log(productId);
+        
+
+
+        /* // If the product is already selected...
         if (this.selectedProduct && this.selectedProduct.id === productId) {
             // Close the details
             this.closeDetails();
@@ -327,7 +313,7 @@ export class InventoryListComponent
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
-            });
+            }); */
     }
 
     /**

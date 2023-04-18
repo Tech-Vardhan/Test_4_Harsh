@@ -57,23 +57,26 @@ export class InventoryService {
     get config$(): Observable<Config[]> {
         return this._Buliding.asObservable();
     }
-    getConfig(): Observable<Building[]> {
-        return this._httpClient
-            .get<Building[]>(
-                'https://cmi-ofm.azurewebsites.net/api/EntityConfig/GetAllBuildings'
-            )
-            // .pipe(
-            //     map((res: any) => res.configs),
-            //     tap((response) => {
-            //         this._Buliding.next(response);
-            //     })
-            // );
+    getConfig() {
+        return this._httpClient.get<Building[]>(
+            'https://cmi-ofm.azurewebsites.net/api/EntityConfig/GetAllBuildings'
+        );
+        // .pipe(
+        //     map((res: any) => res.configs),
+        //     tap((response) => {
+        //         this._Buliding.next(response);
+        //     })
+        // );
         // .pipe(
         //     // pluck('configs'),
         //     // tap((response) => {
         //     //     this._Buliding.next(response);
         //     // })
         // );
+    }
+
+    AddConfigData(id:string){
+
     }
 
     /**
