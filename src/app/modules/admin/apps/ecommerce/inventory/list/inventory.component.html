@@ -324,6 +324,7 @@
                                     [placeholder]="'custom placeholder'"
                                     [settings]="dropdownSettings"
                                     [data]="dropdownList2"
+                                    (onSelect)="onItemSelect2($event)"
                                 >
                                 </ng-multiselect-dropdown>
                                 <mat-form-field class="w-full">

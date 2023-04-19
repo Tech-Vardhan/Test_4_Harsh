@@ -107,7 +107,8 @@ export class InventoryListComponent
     dropdownSettings2: IDropdownSettings;
     ZonesAllData: Campu[] = [];
     Zonename: any;
-    ZoneId : any
+    ZoneId: any;
+    WingId: any;
 
     /**
     
@@ -143,8 +144,7 @@ export class InventoryListComponent
 
             /* for (let i = 0; i < this.ZonesAllData.length; i++) {
                 this.Zonename.push(this.ZonesAllData[i].name);
-            }
-            console.log(this.Zonename); */
+            } */
         });
 
         this.dropdownList = [];
@@ -158,7 +158,7 @@ export class InventoryListComponent
         };
         this.dropdownSettings2 = {
             singleSelection: false,
-            idField: 'zoneId',
+            idField: 'campusId',
             textField: 'name',
 
             unSelectAllText: 'UnSelect All',
@@ -300,16 +300,13 @@ export class InventoryListComponent
             const baseString = reader.result.toString();
             this.selectedBuildingForm.get('buildingImage').setValue(baseString);
             this.Image = baseString.substring(22);
-            console.log(Image);
         };
     }
 
     onSubmit(data) {
         this._inventoryService
-            .AddConfigData(data.value, this.Image,this.ZoneId)
-            .subscribe((response) => {
-                console.log(response);
-            });
+            .AddConfigData(data.value, this.Image, this.ZoneId)
+            .subscribe((response) => {});
     }
     onEdit(id: number) {
         const formElement =
@@ -318,13 +315,10 @@ export class InventoryListComponent
 
         this.updatebtn = !this.updatebtn;
         this.UniqueId = id;
-        /* debugger; */
-        /* console.log('Form Data' + this.signupForm); */
         this._inventoryService
             .EditConfigDataById(id)
             .pipe(pluck('building'))
             .subscribe((res) => {
-                console.log(res);
                 /* this.patchData = res; */
                 this.selectedBuildingForm.patchValue({
                     buildingNo: res[0].buildingNo,
@@ -354,24 +348,24 @@ export class InventoryListComponent
         /* data.Floors = []; */
         data.EntityJson = [];
         data.BuildingImage = '';
-        this._inventoryService.updateData(data.value, id).subscribe((res) => {
-            console.log(res);
-        });
+        this._inventoryService
+            .updateData(data.value, id)
+            .subscribe((res) => {});
         this.selectedBuildingForm.reset();
     }
     onItemSelect(event: any) {
-        console.log(event);
         this.ZoneId = event.campusId;
         this._inventoryService
             .getZoneData(event.campusId)
             .subscribe((response) => {
                 this.dropdownList2 = response.zones;
-                console.log(response.zones);
             });
     }
-    onSelectAll(items: any) {
-        console.log(items);
+    onItemSelect2(event: any) {
+        console.log(event);
+        /* this.WingId = event.zoneId; */
     }
+    onSelectAll(items: any) {}
 
     /**
      * After view init
@@ -439,9 +433,7 @@ export class InventoryListComponent
      * @param productId
      */
     toggleDetails(productId: string): void {
-        console.log(productId);
         /* if(this.selectedProduct ) */
-
         /* // If the product is already selected...
         if (this.selectedProduct && this.selectedProduct.id === productId) {
             // Close the details
