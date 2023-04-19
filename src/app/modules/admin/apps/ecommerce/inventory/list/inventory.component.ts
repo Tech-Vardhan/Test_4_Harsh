@@ -3,6 +3,7 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
+    ElementRef,
     OnDestroy,
     OnInit,
     ViewChild,
@@ -74,6 +75,7 @@ export class InventoryListComponent
     @ViewChild(MatSort) private _sort: MatSort;
     @ViewChild('selectedBuildingForm') signupForm: NgForm;
     products$: Observable<InventoryProduct[]>;
+    @ViewChild('formContainer') formContainer: ElementRef;
 
     brands: InventoryBrand[];
     categories: InventoryCategory[];
@@ -101,7 +103,8 @@ export class InventoryListComponent
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseConfirmationService: FuseConfirmationService,
         private _formBuilder: UntypedFormBuilder,
-        private _inventoryService: InventoryService
+        private _inventoryService: InventoryService,
+        private elementRef: ElementRef
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -139,7 +142,7 @@ export class InventoryListComponent
             basePrice: [''],
             taxPercent: [''],
             price: [''],
-            weight: [''],
+            weight: [''],selectedBuildingForm
             thumbnail: [''],
             images: [[]],
             currentImageIndex: [0], // Image index that is currently being viewed
@@ -247,6 +250,7 @@ export class InventoryListComponent
     }
     onSubmit(data) {
         /* debugger; */
+
         this._inventoryService
             .AddConfigData(data.value)
             .subscribe((response) => {
@@ -254,6 +258,10 @@ export class InventoryListComponent
             });
     }
     onEdit(id: number) {
+        const formElement =
+            this.formContainer.nativeElement.querySelector('#myForm');
+        formElement.scrollIntoView({ behavior: 'smooth' });
+
         this.updatebtn = !this.updatebtn;
         this.UniqueId = id;
         /* debugger; */
@@ -295,6 +303,7 @@ export class InventoryListComponent
         this._inventoryService.updateData(data.value, id).subscribe((res) => {
             console.log(res);
         });
+        this.selectedBuildingForm.reset();
     }
 
     /**
@@ -604,6 +613,7 @@ export class InventoryListComponent
      * Create product
      */
     createProduct(): void {
+        this.formContainer.nativeElement.scrollIntoView({ behavior: 'smooth' });
         /* this._inventoryService.AddConfigData().subscribe(()=>{
             
         }) */

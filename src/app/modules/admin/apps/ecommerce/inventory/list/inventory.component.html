@@ -265,12 +265,13 @@
             </ng-container>
             <hr />
 
-            <div class="flex flex-auto flex-wrap">
+            <div class="flex flex-auto flex-wrap" #formContainer>
                 <div class="flex flex-col w-full lg:w-2/4 sm:pl-8">
                     <form
                         [formGroup]="selectedBuildingForm"
                         (ngSubmit)="onSubmit(selectedBuildingForm)"
                         #f
+                        id="myForm"
                     >
                         <mat-form-field class="w-full">
                             <mat-label>BuildingName</mat-label>
