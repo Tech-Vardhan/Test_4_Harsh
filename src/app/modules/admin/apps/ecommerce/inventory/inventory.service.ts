@@ -21,6 +21,7 @@ import {
     InventoryVendor,
 } from 'app/modules/admin/apps/ecommerce/inventory/inventory.types';
 import { Building, Config } from 'app/shared/building.module';
+import { Campus } from 'app/shared/campus.module';
 
 @Injectable({
     providedIn: 'root',
@@ -108,6 +109,16 @@ export class InventoryService {
         return this._httpClient.post(
             'https://cmi-ofm.azurewebsites.net/api/EntityConfig/EditBuildingConfig/',
             formObject
+        );
+    }
+    getCampusData() {
+        return this._httpClient.get<Campus>(
+            'https://cmi-ofm.azurewebsites.net/api/Campus/GetActiveCampus'
+        );
+    }
+    getZoneData() {
+        return this._httpClient.get(
+            'https://cmi-ofm.azurewebsites.net/api/Campus/GetActiveCampus'
         );
     }
 

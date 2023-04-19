@@ -308,6 +308,17 @@
                                         [formControlName]="'contractor'"
                                     />
                                 </mat-form-field>
+                                <ng-multiselect-dropdown
+                                    id="one"
+                                    *ngIf="
+                                        dropdownList && dropdownList.length > 0
+                                    "
+                                    [placeholder]="'custom placeholder'"
+                                    [settings]="dropdownSettings"
+                                    [data]="dropdownList"
+                                    (onSelect)="onItemSelect($event)"
+                                >
+                                </ng-multiselect-dropdown>
                                 <mat-form-field class="w-full">
                                     <mat-label>Renovation_History</mat-label>
                                     <input
@@ -338,6 +349,7 @@
                                 </mat-form-field>
                                 <div>
                                     <input
+                                        formControlName="buildingImage"
                                         type="file"
                                         (change)="onFileSelected($event)"
                                     />

@@ -19,6 +19,7 @@ import { InventoryListComponent } from 'app/modules/admin/apps/ecommerce/invento
 import { ecommerceRoutes } from 'app/modules/admin/apps/ecommerce/ecommerce.routing';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NativeDateModule } from '@angular/material/core';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
     declarations: [InventoryComponent, InventoryListComponent],
@@ -40,6 +41,7 @@ import { NativeDateModule } from '@angular/material/core';
         SharedModule,
         NativeDateModule,
         MatDatepickerModule,
+        NgMultiSelectDropDownModule
     ],
 })
 export class ECommerceModule {}

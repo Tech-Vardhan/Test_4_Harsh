@@ -40,6 +40,9 @@ import {
     InventoryVendor,
 } from 'app/modules/admin/apps/ecommerce/inventory/inventory.types';
 import { InventoryService } from 'app/modules/admin/apps/ecommerce/inventory/inventory.service';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { Zone } from 'luxon';
+import { Campu } from 'app/shared/building.module';
 
 @Component({
     selector: 'inventory-list',
@@ -97,6 +100,12 @@ export class InventoryListComponent
     updatebtn: boolean = false;
     selectedFile: File;
     Image: any;
+    dropdownList = [];
+    selectedItems = [];
+    dropdownSettings: IDropdownSettings;
+    ZonesAllData: Campu[] = [];
+    Zonename: any;
+
     /**
     
      * Constructor
@@ -126,6 +135,24 @@ export class InventoryListComponent
 
                 this.UniqueId = this.data.UniqueId;
             });
+        this._inventoryService.getCampusData().subscribe((response) => {
+            this.dropdownList = response.zones;
+
+            /* for (let i = 0; i < this.ZonesAllData.length; i++) {
+                this.Zonename.push(this.ZonesAllData[i].name);
+            }
+            console.log(this.Zonename); */
+        });
+
+        this.dropdownList = [];
+        this.selectedItems = [];
+        this.dropdownSettings = {
+            singleSelection: true,
+            idField: 'campusId',
+            textField: 'name',
+            itemsShowLimit: 10,
+            allowSearchFilter: true,
+        };
 
         // Create the selected product form
         /* this.selectedProductForm = this._formBuilder.group({
@@ -250,11 +277,11 @@ export class InventoryListComponent
             )
             .subscribe();
     }
+
     onFileSelected(event) {
         this.selectedFile = event.target.files[0];
     }
     onUpload() {
-        /* const fd = new FormData(); */
         const reader = new FileReader();
         reader.readAsDataURL(this.selectedFile);
         reader.onload = () => {
@@ -262,16 +289,10 @@ export class InventoryListComponent
             this.selectedBuildingForm.get('buildingImage').setValue(baseString);
             this.Image = baseString.substring(22);
             console.log(Image);
-            /* this.Image = baseString; */
         };
     }
 
     onSubmit(data) {
-        debugger;
-        /* this.ImageUpload(data); */
-        /* console.log(data.value); */
-
-        /* debugger; */
         this._inventoryService
             .AddConfigData(data.value, this.Image)
             .subscribe((response) => {
@@ -325,6 +346,12 @@ export class InventoryListComponent
             console.log(res);
         });
         this.selectedBuildingForm.reset();
+    }
+    onItemSelect(item: any) {
+        console.log(item);
+    }
+    onSelectAll(items: any) {
+        console.log(items);
     }
 
     /**
