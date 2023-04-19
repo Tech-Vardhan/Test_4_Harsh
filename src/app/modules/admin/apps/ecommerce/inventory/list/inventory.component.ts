@@ -101,10 +101,13 @@ export class InventoryListComponent
     selectedFile: File;
     Image: any;
     dropdownList = [];
+    dropdownList2 = [];
     selectedItems = [];
     dropdownSettings: IDropdownSettings;
+    dropdownSettings2: IDropdownSettings;
     ZonesAllData: Campu[] = [];
     Zonename: any;
+    ZoneId : any
 
     /**
     
@@ -153,6 +156,15 @@ export class InventoryListComponent
             itemsShowLimit: 10,
             allowSearchFilter: true,
         };
+        this.dropdownSettings2 = {
+            singleSelection: false,
+            idField: 'zoneId',
+            textField: 'name',
+
+            unSelectAllText: 'UnSelect All',
+            itemsShowLimit: 3,
+            allowSearchFilter: true,
+        };
 
         // Create the selected product form
         /* this.selectedProductForm = this._formBuilder.group({
@@ -186,7 +198,7 @@ export class InventoryListComponent
             contractor: [''],
             construction_Cost: [''],
             renovation_History: [''],
-            campus: ['ada5412a-53c1-4234-8d52-7148c4309130'],
+            campus: [''],
             zone: ['South'],
             wingList: ['3'],
             isActive: ['false'],
@@ -294,7 +306,7 @@ export class InventoryListComponent
 
     onSubmit(data) {
         this._inventoryService
-            .AddConfigData(data.value, this.Image)
+            .AddConfigData(data.value, this.Image,this.ZoneId)
             .subscribe((response) => {
                 console.log(response);
             });
@@ -347,8 +359,15 @@ export class InventoryListComponent
         });
         this.selectedBuildingForm.reset();
     }
-    onItemSelect(item: any) {
-        console.log(item);
+    onItemSelect(event: any) {
+        console.log(event);
+        this.ZoneId = event.campusId;
+        this._inventoryService
+            .getZoneData(event.campusId)
+            .subscribe((response) => {
+                this.dropdownList2 = response.zones;
+                console.log(response.zones);
+            });
     }
     onSelectAll(items: any) {
         console.log(items);

@@ -313,10 +313,17 @@
                                     *ngIf="
                                         dropdownList && dropdownList.length > 0
                                     "
-                                    [placeholder]="'custom placeholder'"
+                                    [placeholder]="'Select Campus Please'"
                                     [settings]="dropdownSettings"
                                     [data]="dropdownList"
                                     (onSelect)="onItemSelect($event)"
+                                >
+                                </ng-multiselect-dropdown>
+                                <ng-multiselect-dropdown
+                                    id="two"
+                                    [placeholder]="'custom placeholder'"
+                                    [settings]="dropdownSettings"
+                                    [data]="dropdownList2"
                                 >
                                 </ng-multiselect-dropdown>
                                 <mat-form-field class="w-full">

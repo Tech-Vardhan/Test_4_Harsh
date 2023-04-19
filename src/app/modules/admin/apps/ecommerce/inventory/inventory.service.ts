@@ -22,6 +22,7 @@ import {
 } from 'app/modules/admin/apps/ecommerce/inventory/inventory.types';
 import { Building, Config } from 'app/shared/building.module';
 import { Campus } from 'app/shared/campus.module';
+import { apiZone } from 'app/shared/zone.module';
 
 @Injectable({
     providedIn: 'root',
@@ -77,13 +78,16 @@ export class InventoryService {
         // );
     }
 
-    AddConfigData(data: any, file: any) {
+    AddConfigData(data: any, file: any, ZoneId: any) {
         const formObject = new FormData();
 
         for (let key in data) {
             formObject.append(key, (data as any)[key]);
         }
         formObject.append('buildingImage', file);
+        formObject.append('campus', ZoneId);
+        // formObject.append('campus', ZoneId);
+
 
         return this._httpClient.post(
             'https://cmi-ofm.azurewebsites.net/api/EntityConfig/AddBuildingConfig/',
@@ -116,9 +120,12 @@ export class InventoryService {
             'https://cmi-ofm.azurewebsites.net/api/Campus/GetActiveCampus'
         );
     }
-    getZoneData() {
-        return this._httpClient.get(
-            'https://cmi-ofm.azurewebsites.net/api/Campus/GetActiveCampus'
+    getZoneData(index: string) {
+        return this._httpClient.post<apiZone>(
+            'https://cmi-ofm.azurewebsites.net/api/Zone/getZonesByCampus',
+            {
+                campusId: index,
+            }
         );
     }
 
