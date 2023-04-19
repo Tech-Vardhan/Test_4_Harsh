@@ -13,6 +13,8 @@ import { AppComponent } from 'app/app.component';
 import { appRoutes } from 'app/app.routing';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthifmInterceptor } from './core/auth/authifm.interceptor';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NativeDateModule } from '@angular/material/core';
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy: PreloadAllModules,
@@ -23,6 +25,7 @@ const routerConfig: ExtraOptions = {
     declarations: [AppComponent],
     imports: [
         BrowserModule,
+
         BrowserAnimationsModule,
         RouterModule.forRoot(appRoutes, routerConfig),
 
@@ -36,6 +39,8 @@ const routerConfig: ExtraOptions = {
 
         // Layout module of your application
         LayoutModule,
+        MatDatepickerModule,
+        NativeDateModule,
     ],
     bootstrap: [AppComponent],
     providers: [

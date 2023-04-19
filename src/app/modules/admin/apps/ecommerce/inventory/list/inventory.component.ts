@@ -95,6 +95,8 @@ export class InventoryListComponent
     selectedBuildingForm: any;
     patchData: any;
     updatebtn: boolean = false;
+    selectedFile: File;
+    Image: any;
     /**
     
      * Constructor
@@ -152,7 +154,7 @@ export class InventoryListComponent
             buildingNo: [''],
             buildingName: [''],
             description: [''],
-            date_constructed: ['date'],
+            date_constructed: [''],
             architect: [''],
             contractor: [''],
             construction_Cost: [''],
@@ -248,11 +250,30 @@ export class InventoryListComponent
             )
             .subscribe();
     }
-    onSubmit(data) {
-        /* debugger; */
+    onFileSelected(event) {
+        this.selectedFile = event.target.files[0];
+    }
+    onUpload() {
+        /* const fd = new FormData(); */
+        const reader = new FileReader();
+        reader.readAsDataURL(this.selectedFile);
+        reader.onload = () => {
+            const baseString = reader.result.toString();
+            this.selectedBuildingForm.get('buildingImage').setValue(baseString);
+            this.Image = baseString.substring(22);
+            console.log(Image);
+            /* this.Image = baseString; */
+        };
+    }
 
+    onSubmit(data) {
+        debugger;
+        /* this.ImageUpload(data); */
+        /* console.log(data.value); */
+
+        /* debugger; */
         this._inventoryService
-            .AddConfigData(data.value)
+            .AddConfigData(data.value, this.Image)
             .subscribe((response) => {
                 console.log(response);
             });

@@ -17,13 +17,12 @@ import { SharedModule } from 'app/shared/shared.module';
 import { InventoryComponent } from 'app/modules/admin/apps/ecommerce/inventory/inventory.component';
 import { InventoryListComponent } from 'app/modules/admin/apps/ecommerce/inventory/list/inventory.component';
 import { ecommerceRoutes } from 'app/modules/admin/apps/ecommerce/ecommerce.routing';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NativeDateModule } from '@angular/material/core';
 
 @NgModule({
-    declarations: [
-        InventoryComponent,
-        InventoryListComponent
-    ],
-    imports     : [
+    declarations: [InventoryComponent, InventoryListComponent],
+    imports: [
         RouterModule.forChild(ecommerceRoutes),
         MatButtonModule,
         MatCheckboxModule,
@@ -38,9 +37,9 @@ import { ecommerceRoutes } from 'app/modules/admin/apps/ecommerce/ecommerce.rout
         MatSelectModule,
         MatSlideToggleModule,
         MatTooltipModule,
-        SharedModule
-    ]
+        SharedModule,
+        NativeDateModule,
+        MatDatepickerModule,
+    ],
 })
-export class ECommerceModule
-{
-}
+export class ECommerceModule {}

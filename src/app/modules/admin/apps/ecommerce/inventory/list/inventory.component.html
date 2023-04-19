@@ -322,13 +322,12 @@
                                         [formControlName]="'construction_Cost'"
                                     />
                                 </mat-form-field>
-                                <!-- <mat-form-field appearance="fill">
+                                <mat-form-field appearance="fill">
                                     <mat-label>Choose a date</mat-label>
                                     <input
                                         matInput
                                         [matDatepicker]="picker"
-                                        name="date"
-                                        [formControlName]="date_constructed"
+                                        formControlName="date_constructed"
                                     />
                                     <mat-hint>MM/DD/YYYY</mat-hint>
                                     <mat-datepicker-toggle
@@ -336,7 +335,20 @@
                                         [for]="picker"
                                     ></mat-datepicker-toggle>
                                     <mat-datepicker #picker></mat-datepicker>
-                                </mat-form-field> -->
+                                </mat-form-field>
+                                <div>
+                                    <input
+                                        type="file"
+                                        (change)="onFileSelected($event)"
+                                    />
+                                    <button
+                                        mat-raised-button
+                                        (click)="onUpload()"
+                                        type="button"
+                                    >
+                                        Upload
+                                    </button>
+                                </div>
                                 <button
                                     mat-raised-button
                                     color="primary"

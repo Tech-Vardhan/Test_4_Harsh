@@ -76,12 +76,13 @@ export class InventoryService {
         // );
     }
 
-    AddConfigData(data: any) {
+    AddConfigData(data: any, file: any) {
         const formObject = new FormData();
 
         for (let key in data) {
             formObject.append(key, (data as any)[key]);
         }
+        formObject.append('buildingImage', file);
 
         return this._httpClient.post(
             'https://cmi-ofm.azurewebsites.net/api/EntityConfig/AddBuildingConfig/',
