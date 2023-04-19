@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import {
     BehaviorSubject,
     filter,
@@ -57,6 +57,7 @@ export class InventoryService {
     get config$(): Observable<Config[]> {
         return this._Buliding.asObservable();
     }
+
     getConfig() {
         return this._httpClient.get<Building[]>(
             'https://cmi-ofm.azurewebsites.net/api/EntityConfig/GetAllBuildings'
@@ -75,8 +76,38 @@ export class InventoryService {
         // );
     }
 
-    AddConfigData(id:string){
+    AddConfigData(data: any) {
+        const formObject = new FormData();
 
+        for (let key in data) {
+            formObject.append(key, (data as any)[key]);
+        }
+
+        return this._httpClient.post(
+            'https://cmi-ofm.azurewebsites.net/api/EntityConfig/AddBuildingConfig/',
+            formObject
+        );
+    }
+    EditConfigDataById(index: number) {
+        return this._httpClient.get<Building[]>(
+            'https://cmi-ofm.azurewebsites.net/api/EntityConfig/GetBuildingID?',
+            {
+                params: new HttpParams().set('BuildingID', index),
+            }
+        );
+    }
+    updateData(editedData: any, index: string) {
+        //editedData.programID = programID;
+        const formObject = new FormData();
+        for (let key in editedData) {
+            formObject.append(key, (editedData as any)[key]);
+        }
+        formObject.append('UniqueId', index);
+
+        return this._httpClient.post(
+            'https://cmi-ofm.azurewebsites.net/api/EntityConfig/EditBuildingConfig/',
+            formObject
+        );
     }
 
     /**

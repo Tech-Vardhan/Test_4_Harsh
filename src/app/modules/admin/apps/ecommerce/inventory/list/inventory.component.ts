@@ -9,6 +9,7 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import {
+    NgForm,
     UntypedFormBuilder,
     UntypedFormControl,
     UntypedFormGroup,
@@ -71,7 +72,7 @@ export class InventoryListComponent
 {
     @ViewChild(MatPaginator) private _paginator: MatPaginator;
     @ViewChild(MatSort) private _sort: MatSort;
-
+    @ViewChild('selectedBuildingForm') signupForm: NgForm;
     products$: Observable<InventoryProduct[]>;
 
     brands: InventoryBrand[];
@@ -89,7 +90,9 @@ export class InventoryListComponent
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     BuildingName: [] = [];
     data: any;
-
+    selectedBuildingForm: any;
+    patchData: any;
+    updatebtn: boolean = false;
     /**
     
      * Constructor
@@ -108,18 +111,19 @@ export class InventoryListComponent
     /**
      * On init
      */
+    UniqueId: any;
     ngOnInit() {
-        /* debugger; */
         this._inventoryService
             .getConfig()
             .pipe(pluck('configs'))
             .subscribe((res) => {
-                console.log(res);
                 this.data = res;
+
+                this.UniqueId = this.data.UniqueId;
             });
 
         // Create the selected product form
-        this.selectedProductForm = this._formBuilder.group({
+        /* this.selectedProductForm = this._formBuilder.group({
             id: [''],
             category: [''],
             name: ['', [Validators.required]],
@@ -140,6 +144,24 @@ export class InventoryListComponent
             images: [[]],
             currentImageIndex: [0], // Image index that is currently being viewed
             active: [false],
+        }); */
+        this.selectedBuildingForm = this._formBuilder.group({
+            buildingNo: [''],
+            buildingName: [''],
+            description: [''],
+            date_constructed: ['date'],
+            architect: [''],
+            contractor: [''],
+            construction_Cost: [''],
+            renovation_History: [''],
+            campus: ['ada5412a-53c1-4234-8d52-7148c4309130'],
+            zone: ['South'],
+            wingList: ['3'],
+            isActive: ['false'],
+            buildingImage: ['image.href'],
+            noOFFloors: ['0'],
+            floorList: ['[]'],
+            EntityJson: ['[]'],
         });
 
         // Get the brands
@@ -223,6 +245,57 @@ export class InventoryListComponent
             )
             .subscribe();
     }
+    onSubmit(data) {
+        /* debugger; */
+        this._inventoryService
+            .AddConfigData(data.value)
+            .subscribe((response) => {
+                console.log(response);
+            });
+    }
+    onEdit(id: number) {
+        this.updatebtn = !this.updatebtn;
+        this.UniqueId = id;
+        /* debugger; */
+        /* console.log('Form Data' + this.signupForm); */
+        this._inventoryService
+            .EditConfigDataById(id)
+            .pipe(pluck('building'))
+            .subscribe((res) => {
+                console.log(res);
+                /* this.patchData = res; */
+                this.selectedBuildingForm.patchValue({
+                    buildingNo: res[0].buildingNo,
+                    buildingName: res[0].buildingName,
+                    description: 'Desc',
+                    date_constructed: 'Date',
+                    architect: res[0].architect,
+                    contractor: res[0].contractor,
+                    construction_Cost: res[0].construction_Cost,
+                    renovation_History: 'renovation_History',
+                    campus: 'ada5412a-53c1-4234-8d52-7148c4309130',
+                    zone: 'Zone',
+                    wingList: 'WingList',
+                    /* isActive: res[0].isActive, */
+                    buildingImage: 'image.href',
+                    noOFFloors: '1',
+                    floorList: '[]',
+                    entityJson: '[]',
+
+                    /* contractor: this.patchData.contractor, */
+                    /* state: this.patchData.state,
+                    zip: this.patchData.zip */
+                });
+            });
+    }
+    updateConfig(data: any, id: string) {
+        /* data.Floors = []; */
+        data.EntityJson = [];
+        data.BuildingImage = '';
+        this._inventoryService.updateData(data.value, id).subscribe((res) => {
+            console.log(res);
+        });
+    }
 
     /**
      * After view init
@@ -291,8 +364,7 @@ export class InventoryListComponent
      */
     toggleDetails(productId: string): void {
         console.log(productId);
-        
-
+        /* if(this.selectedProduct ) */
 
         /* // If the product is already selected...
         if (this.selectedProduct && this.selectedProduct.id === productId) {
@@ -532,7 +604,10 @@ export class InventoryListComponent
      * Create product
      */
     createProduct(): void {
-        // Create the product
+        /* this._inventoryService.AddConfigData().subscribe(()=>{
+            
+        }) */
+        /* // Create the product
         this._inventoryService.createProduct().subscribe((newProduct) => {
             // Go to new product
             this.selectedProduct = newProduct;
@@ -542,7 +617,7 @@ export class InventoryListComponent
 
             // Mark for check
             this._changeDetectorRef.markForCheck();
-        });
+        }); */
     }
 
     /**
